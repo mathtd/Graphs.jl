@@ -30,8 +30,7 @@ function to_dot{G<:AbstractGraph}(graph::G, stream::IO,attrs::AttributeDict=Attr
             write(stream,"$(vertex_index(vtx,graph))$attrs\n")
         end
         for edge in edges(graph)
-#             write(stream,"$(vertex_index(source(edge), graph)) $(edge_op(graph)) $(vertex_index(target(edge), graph))$(has_edge_attrs ? string(" ", to_dot(attributes(edge, graph))) : "")\n")
-write(stream,"$(vertex_index(source(edge), graph)) $(edge_op(graph)) $(vertex_index(target(edge), graph))$(has_edge_attrs ? string(to_dot(attributes(edge, graph))) : "")\n")
+             write(stream,"$(vertex_index(source(edge), graph)) $(edge_op(graph)) $(vertex_index(target(edge), graph))$(has_edge_attrs ? string(" ", to_dot(attributes(edge, graph))) : "")\n")
         end
     elseif implements_vertex_list(graph) && (implements_incidence_list(graph) || implements_adjacency_list(graph))
         for vertex in vertices(graph)
@@ -76,7 +75,8 @@ function to_dot_graph(attrs::AttributeDict)
     end
 end
 
-to_dot(attr::AbstractString, value) = "\"$attr\"=\"$value\""
+# to_dot(attr::AbstractString, value) = "\"$attr\"=\"$value\""
+to_dot(attr::AbstractString, value) = "\"$attr\"=$value"
 
 to_dot(attr_tuple::@compat Tuple{String, Any}) = "\"$(attr_tuple[1])\"=\"$(attr_tuple[2])\""
 
